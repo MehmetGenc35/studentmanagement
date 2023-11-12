@@ -13,15 +13,25 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
+    @Column(name = "firstname",nullable = false)
     private String name;
 
+    @Column(name = "lastname",nullable = false)
     private String surname;
+
 
     private int studentNumber;
 
+    @Column(name = "student_department",nullable = false)
     private String department;
 
+
     @ManyToMany
+    @JoinTable(
+            name = "t_students_and_courses",
+            joinColumns = {@JoinColumn(name = "std_id")},
+            inverseJoinColumns = {@JoinColumn(name = "course_id")}
+    )
     List<Course> courseList=new ArrayList<>();
 
     //Getter-Setter

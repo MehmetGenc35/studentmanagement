@@ -1,10 +1,19 @@
 package service;
 
+import config.HibernateUtils;
 import domain.Course;
+import domain.Student;
+import repository.CourseRepository;
+import repository.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CourseService implements Service<Course> {
+    private Repository<Course> repo=new CourseRepository();
+    private Student student=new Student();
+
     @Override
     public void showMenu() {
         Scanner inp = new Scanner(System.in);
@@ -16,16 +25,18 @@ public class CourseService implements Service<Course> {
 
             switch (select){
                 case 1:
-                    //TODO:kurs ekleme metodu?
+                    add(informationCourse());
                     break;
                 case 2:
-                    //TODO:kurs silme;
+                    Course course=findCourseById(findCourseId());
+                    remove(course);
                     break;
                 case 3:
-                    //TODO:Kursları listele
+                    getAll();
                     break;
                 case 0:
                     System.out.println("Ana menüye yönlendiriliyorsunuz...");
+
                     break;
                 default:
                     System.out.println("Hatalı bir giriş yaptınız...");
@@ -38,27 +49,60 @@ public class CourseService implements Service<Course> {
 
 
     }
+    public Course informationCourse(){
+        Course course=new Course();
+        Scanner inp = new Scanner(System.in);
+        System.out.println("Ders adı: ");
+        course.setCourseName(inp.nextLine());
+        System.out.println("Bölüm: ");
+        course.setDepartment(inp.nextLine());
+        System.out.println("Kurs kodu: ");
+        course.setCode(inp.nextLine());
+        System.out.println("Kurs kredisi: ");
+        course.setCourseCredit(inp.nextInt());
+        inp.nextLine();
+
+
+
+        return course;
+    }
 
 
 
     @Override
     public void add(Course obj) {
 
+        student.getCourseList().add(obj);
+        repo.save(obj);
     }
 
     @Override
     public void remove(Course obj) {
 
+        repo.remove(obj);
     }
 
     @Override
     public void getAll() {
+        repo.getAll();
 
     }
 
-    public Course getCourseByCode(String courseCode){
+    public Course findCourseById(Long id){
+        return repo.getById(id);
 
-
-        return null;
     }
+
+
+    public Long findCourseId(){
+        Scanner inp = new Scanner(System.in);
+        System.out.println("*********Dersler**************");
+        getAll();
+        System.out.println("******************************");
+        System.out.println("Silmek istediğiniz dersin id bilgisini listeden seçip giriniz: ");
+        Long courseId=inp.nextLong();
+        inp.nextLine();
+        return courseId;
+    }
+
 }

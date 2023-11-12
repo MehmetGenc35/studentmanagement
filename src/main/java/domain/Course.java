@@ -13,16 +13,20 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
+    @Column(name = "course_name",nullable = false)
     private String courseName;
 
+    @Column(nullable = false)
     private String code;
 
+    @Column(name = "credit",nullable = false)
     private int courseCredit;
 
+    @Column(name = "course_department",nullable = false)
     private String department;
 
-    @ManyToMany
-    List<Student> courseList=new ArrayList<>();
+    @ManyToMany(mappedBy = "courseList",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    List<Student> studentList=new ArrayList<>();
 
     //Getter-Setter
 
@@ -63,12 +67,13 @@ public class Course {
         this.department = department;
     }
 
-    public List<Student> getCourseList() {
-        return courseList;
+    public List<Student> getStudentList() {
+        return studentList;
     }
 
-    public void setCourseList(List<Student> courseList) {
-        this.courseList = courseList;
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
     }
 
     @Override

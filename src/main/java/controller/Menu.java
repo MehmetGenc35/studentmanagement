@@ -1,5 +1,6 @@
 package controller;
 
+import config.HibernateUtils;
 import service.CourseService;
 import service.StudentService;
 
@@ -28,6 +29,7 @@ public class Menu {
                     break;
                 case 0:
                     System.out.println("İyi günler...");
+                    HibernateUtils.shutDown();
                     break;
                 default:
                     System.out.println("Hatalı bir giriş yaptınız...");
